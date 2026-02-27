@@ -3,9 +3,16 @@
 給定n=27,回傳3，因爲27=3^2+3^2+3^2=9+9+9。"""
 
 def even_to_odd(num):  #判斷一個正整數是否為偶數，如果為偶數，化偶數為奇數
-    while num%2==0:
-        num=num//2
-    return num
+    while True:
+        k=0
+        if num%4==0:
+            num=num//4
+        elif num%4==2:
+            num=num//2
+            k=1
+        else:
+            break
+    return num,k
 def is_square(num):
     i=1
     while i*i<num:
@@ -30,8 +37,8 @@ def count_oddprime_factors(odd_part):
         #獲得一個正整數中4k+3型素數的個數
     lis=[x for x in factors if x%4==3]
     return len(lis)
-
-def two_square_sum(odd_part):
+#二平方和定理：如果一個正整數的素因數分解，如果4k+3型的素數的個數為奇數，則無法分解成兩個平方數之和
+def two_square_sum(odd_part):  
     
     l=count_oddprime_factors(odd_part)
     if l % 2==0:
@@ -39,8 +46,8 @@ def two_square_sum(odd_part):
     else:
         return 3
 
-def three_square_sum(num,odd_part):
-    if (num // odd_part) % 4==0 and odd_part % 8==7:
+def three_square_sum(odd_part,k):
+    if k==0 and odd_part % 8==7:
         return 4
     else:
         return 3
@@ -63,11 +70,11 @@ def main():
    #根據四平方和定理，任何一個正整數都可以分解成四個平方整數之和
     n=1
     if is_square(num)!=1:
-        odd_part=even_to_odd(num)
+        odd_part,k =even_to_odd(num)
         n+=1
         if two_square_sum(odd_part)!=2:
             n+=1
-            if three_square_sum(num,odd_part)!=3:
+            if three_square_sum(odd_part,k)!=3:
                 n+=1
     
     print(f'正整數{num}的最小平方整數數量為{n}')
